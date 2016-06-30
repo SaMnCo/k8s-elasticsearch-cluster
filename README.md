@@ -198,3 +198,16 @@ You should see something similar to the following:
 ```
 
 *Note:* If you are running Elasticsearch in a non-default namespace then you need to create two service accounts for both the default namespace and the custom one; this is especially important if the ability to scale data nodes is a requirement!
+
+### Restricting access to the cluster
+
+ElasticSearch has a very weak security mechanism, so you might not want to expose the service endpoint to the internet, and limit it to the cluster. 
+
+In that case, use the es-backend-svc.yaml file instead of es-svc.yaml
+
+```
+kubectl create -f es-backend-svc.yaml
+```
+
+Provided you are in the default namespace, ES will now be available at http://elasticsearch.default.svc.cluster.local:9200
+
