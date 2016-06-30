@@ -12,6 +12,8 @@ spec:
   selector:
     component: elasticsearch
     role: data
+    volume_id: "{{volume_id}}"
+    id: "{{node_id}}"
   template:
     metadata:
       labels:
