@@ -5,34 +5,45 @@ metadata:
   labels:
     component: elasticsearch
     role: data
-    id: "{{volume_id}}"
+    volume_id: "{{volume_id}}"
+    id: "{{node_id}}"
 spec:
   replicas: 1
   selector:
     component: elasticsearch
     role: data
-    id: "{{volume_id}}"
   template:
     metadata:
       labels:
         component: elasticsearch
         role: data
+        volume_id: "{{volume_id}}"
+        id: "{{node_id}}"
     spec:
       serviceAccount: elasticsearch
       containers:
       - name: es-data
+        resources:
+          requests:
+            cpu: "300m"
+            memory: "1Gi"
+          limits:
+            cpu: "500m"
+            memory: "2Gi"
         securityContext:
           privileged: true
           capabilities:
             add:
               - IPC_LOCK
         image: quay.io/pires/docker-elasticsearch-kubernetes:2.3.3
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         env:
         - name: NAMESPACE
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
+        - name: "ES_HEAP_SIZE"
+          value: "1g"
         - name: "CLUSTER_NAME"
           value: "myesdb"
         - name: NODE_MASTER
