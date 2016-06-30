@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: es-data-{{volume_id}}
+spec:
+  capacity:
+    storage: {{default_disk_size}}Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  awsElasticBlockStore:
+    fsType: "ext4"
+    volumeID: "{{volume_id}}"
